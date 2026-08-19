@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyek Individu 2026 — DTETI UGM</title>
+<style>
+  :root {
+    --bg: #004A74;
+    --bg-2: #003a5c;
+    --panel: #ffffff;
+    --panel-2: #ffffff;
+    --border: #d7dee7;
+    --text: #10233f;
+    --text-dim: #5c6b80;
+    --navy: #003a5c;
+    --navy-2: #004A74;
+    --accent: #edb111;
+    --accent-2: #c98f06;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image: radial-gradient(circle at 15% 0%, var(--bg-2), var(--bg) 55%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  /* ============ WRAPPER =============
+     Default (mobile): satu kolom, card vertikal seperti desain asli.
+     Di layar lebar (landscape/desktop): berubah jadi 2 kolom.
+  */
+  .wrapper {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ---- Panel identitas (logo, judul, agenda) ---- */
+  .identity {
+    background: #ffffff;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 28px 20px;
+    text-align: center;
+  }
+
+  .logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--navy-2);
+    margin: 0 auto 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 13px;
+    border: 2px solid var(--accent);
+  }
+
+  /* ===== Profile image (logo DTETI) — BASE STYLE, berlaku di SEMUA ukuran layar =====
+     Ini sengaja ditaruh di sini, di luar media query manapun, supaya containment-nya
+     (overflow: hidden + posisi absolute pada img) aktif dari mobile sampai desktop.
+  */
+  .profile-img {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    background: #fff;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    border: 2px solid rgba(245, 173, 26, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .profile-img img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    display: block;
+  }
+
+  .identity h1 {
+    font-size: 17px;
+    margin: 0 0 4px;
+    color: var(--text);
+  }
+
+  .identity p {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    margin: 0 0 18px;
+    line-height: 1.5;
+  }
+
+  .agenda {
+    background: var(--accent);
+    border-radius: 14px;
+    padding: 14px 16px;
+    text-align: left;
+    color: #241503;
+  }
+
+  .agenda .label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 4px;
+  }
+
+  .agenda .title {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .agenda .date {
+    font-size: 12px;
+    opacity: 0.85;
+  }
+
+  /* ---- Grup tombol ---- */
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .group-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #cfe0f0;
+    padding: 0 4px;
+  }
+
+  a.btn {
+    display: block;
+    background: #ffffff;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--navy);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 20, 40, 0.18);
+    transition: background 0.15s, transform 0.1s, border-color 0.15s;
+  }
+
+  a.btn:hover {
+    background: #eaf1fb;
+  }
+
+  a.btn:active {
+    transform: scale(0.98);
+  }
+
+  a.btn.ghost {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-style: dashed;
+    border-color: rgba(255,255,255,0.4);
+  }
+  a.btn.ghost:hover { background: rgba(255,255,255,0.16); }
+
+  a.btn.light {
+    background: var(--accent);
+    color: #241503;
+    border-color: var(--accent-2);
+    font-weight: 700;
+  }
+  a.btn.light:hover { background: var(--accent-2); }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: #cfe0f0;
+    padding-top: 4px;
+  }
+
+  /* ============ LANDSCAPE / DESKTOP ============
+     Breakpoint: begitu layar cukup lebar untuk landscape (>=860px),
+     wrapper berubah dari 1 kolom sempit -> 2 kolom lebar.
+     Panel identitas jadi sidebar kiri yang "sticky" (diam saat scroll),
+     grup tombol jadi grid 2 kolom di kanan.
+     Hanya berisi PERUBAHAN LAYOUT untuk desktop — bukan base style.
+  */
+  @media (min-width: 860px) {
+    .wrapper {
+      max-width: 960px;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 28px;
+    }
+
+    .identity {
+      flex: 0 0 300px;
+      position: sticky;
+      top: 24px;
+      text-align: left;
+      padding: 32px 26px;
+    }
+
+    .logo { margin: 0 0 16px; }
+
+    /* override ukuran logo khusus desktop — lebih besar dari base 90px */
+    .profile-img {
+      width: 110px;
+      height: 110px;
+      margin: 0 0 16px;
+    }
+
+    .agenda { text-align: left; }
+
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* setiap grup tombol jadi grid 2 kolom */
+    .group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* grup dengan 1 tombol saja (misal FAQ tunggal) tetap span penuh */
+    .group.single {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- Panel identitas: tetap di kiri saat desktop, di atas saat mobile -->
+  <div class="identity">
+    <div class="profile-img">
+        <img src="assets/dteti.jpg" alt="DTETI Logo">
+    </div>
+    <h1>Proyek Individu 2026</h1>
+    <p>Departemen Teknik Elektro dan Teknologi Informasi<br>Fakultas Teknik, Universitas Gadjah Mada</p>
+  </div>
+
+  <!-- Konten tombol -->
+  <div class="content">
+
+    <div class="group">
+      <div class="group-label" style="grid-column: 1/-1;">Informasi umum proyek individu</div>
+      <a class="btn" href="#" target="_blank">Pengumuman Pelaksanaan Proyek Individu</a>
+      <a class="btn" href="#" target="_blank">Pengumuman Hasil Bidding Proyek Individu</a>
+    </div>
+
+    <div class="group">
+      <div class="group-label" style="grid-column: 1/-1;">Formulir proyek individu</div>
+      <a class="btn" href="#" target="_blank">Formulir Pernyataan Pelaksanaan Proyek Individu</a>
+    </div>
+
+    <div class="group">
+      <div class="group-label" style="grid-column: 1/-1;">Dokumen &amp; template</div>
+      <a class="btn" href="#" target="_blank">Template Form Approval Dosen Pembimbing Proyek Individu</a>
+    </div>
+
+    <div class="group single">
+      <div class="group-label">Frequently ask question</div>
+      <a class="btn" href="#" target="_blank">FAQ</a>
+      <a class="btn ghost" href="mailto:proyekindividu@ugm.ac.id">Ask Us: proyekindividu@ugm.ac.id</a>
+    </div>
+
+    <div class="footer-note">© 2026 DTETI FT UGM</div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
